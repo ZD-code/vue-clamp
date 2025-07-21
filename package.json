@@ -48,7 +48,7 @@
   },
   "homepage": "https://justineo.github.io/vue-clamp/demo/",
   "license": "MIT",
-  "repository": "brand_zd/vue-clamp",
+  "repository": "brand_zhang/vue-clamp",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
