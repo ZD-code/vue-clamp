@@ -1,6 +1,6 @@
 {
   "name": "@brand_zd/vue-clamp",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Clamping multiline text with ease.",
   "scripts": {
     "serve": "vue-cli-service serve",
