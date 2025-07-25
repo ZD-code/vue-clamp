@@ -192,8 +192,6 @@ export default {
     stepToFit () {
       this.fill()
       this.clamp()
-      // 最后再减一个字，规避特殊情况下，按钮会换行展示问题
-      this.moveEdge(-1)
     },
     fill () {
       while (

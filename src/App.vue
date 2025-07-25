@@ -1,5 +1,30 @@
 <template>
   <article id="app">
+    <section>
+      <ul class="schedule-list">
+        <li v-for="(file, index) in records" :key="file.id" class="record-list">
+          <div class="list-info">
+            <div class="btn btn-sm" @click="handleRecordEdit(file, index)">
+              减少
+            </div>
+            <div class="btn btn-sm" @click="addRecordEdit(file, index)">
+              add
+            </div>
+          </div>
+          <div class="work-detail-container">
+            <div class="wrapper">
+              <v-clamp class="text" autoresize :max-lines="2">{{ file.detail }}
+                <template #after="{ toggle, expanded, clamped }">
+                  <button v-if="expanded || clamped" class="toggle btn btn-sm" style="margin-left: 2px;" @click="toggle">
+                    {{ expanded ? '收起' : '查看更多' }}
+                  </button>
+                </template>
+              </v-clamp>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
     <h1 @click="pascal = !pascal">&lt;{{ pascal ? 'VueClamp' : 'vue-clamp' }}&gt;</h1>
     <div id="lang" class="lang btn-group">
       <button class="btn btn-sm" :class="{ active: !zh }" @click="zh = false">English</button>
@@ -15,7 +40,7 @@
       {{ zh ? '功能' : 'Features' }}
     </h2>
     <ul>
-      <li>{{ zh ? '可以选择限制行数与/或最大高度，无需指定行高。' : 'Clamps text with max lines and/or max height. No need to specify line height.' }}</li>
+      <li>{{ zh ? '可以选择限制行数与/或最大高度，无需指定行高。' : 'Clamps text with max lines and/or max height. No need to specify lineheight.' }}</li>
       <li>{{ zh ? '支持在布局变化时自动更新。' : 'Automatically updates upon layout change.' }}</li>
       <li>{{ zh ? '支持展开/收起被截断部分内容。' : 'The clamped text can be expanded/collapsed.' }}</li>
       <li>{{ zh ? '支持自定义截断文本前后内容，并且进行响应式更新。' : 'Customizable and responsive content before/after clamped text.' }}</li>
@@ -61,21 +86,49 @@
           </div>
         </div>
       </div>
-      <v-clamp :class="{
-        demo: true,
-        hyphens: hyphens1,
-        rtl: rtl1
-      }" :max-lines="lines" autoresize :style="{
-          width: `${width1}px`,
-          wordBreak: 'break-all'
-        }">
-        <!-- {{ zh ? textZh : text }} -->
-        {{ customText }}
-        <template #after="{ toggle, expanded, clamped }">
-          <button v-if="expanded || clamped" class="toggle btn btn-sm" @click="toggle">{{ zh ? '切换' : 'Toggle'
-            }}</button>
-        </template>
-      </v-clamp>
+      <div class="demo-box">
+        <div class="l">
+          <v-clamp :class="{
+            demo: true,
+            hyphens: hyphens1,
+            rtl: rtl1
+          }" :max-lines="lines" autoresize :style="{
+        wordBreak: 'break-all',
+        width: `${width1}px`
+      }">
+            <!-- {{ zh ? textZh : text }} -->
+            {{ customText }}
+            <template #after="{ toggle, expanded, clamped }">
+              {{ expanded }}--{{ clamped }}
+              <button v-if="expanded || clamped" class="toggle btn btn-sm" @click="toggle">{{ expanded ? '收起' : '查看更多'
+                }}</button>
+            </template>
+          </v-clamp>
+        </div>
+        <div class="r">啊多发点是发</div>
+      </div>
+    </section>
+    <section>
+      <div class="demo-box">
+        <div class="l">
+          <v-clamp :class="{
+            demo: true,
+            hyphens: hyphens1,
+            rtl: rtl1
+          }" :max-lines="lines" autoresize :style="{
+        wordBreak: 'break-all',
+        width: `${width1}px`
+      }">
+            <!-- {{ zh ? textZh : text }} -->
+            {{ customText }}
+            <template #after="{ toggle, expanded, clamped }">
+              <button v-if="expanded || clamped" class="toggle btn btn-sm" @click="toggle">{{ expanded ? '收起' : '查看更多'
+                }}</button>
+            </template>
+          </v-clamp>
+        </div>
+        <div class="r">啊多发点是发</div>
+      </div>
     </section>
     <div class="divider text-center" data-content="↓ max-height & slot `before` & toggle outside" />
     <section class="case">
@@ -123,8 +176,8 @@
         hyphens: hyphens2,
         rtl: rtl2
       }" :max-height="height" autoresize :expanded.sync="expanded1" :style="{
-          width: `${width2}px`
-        }">
+        width: `${width2}px`
+      }">
         {{ zh ? textZh : text }}
         <template #before>
           <span class="featured label label-rounded label-primary">{{ zh ? '推荐' : 'Featured' }}</span>
@@ -168,8 +221,8 @@
         hyphens: hyphens3,
         rtl: rtl3
       }" :max-lines="lines3" autoresize :style="{
-          width: `${width3}px`
-        }" @clampchange="clamped3 = $event">{{ zh ? textZh : text }}</v-clamp>
+        width: `${width3}px`
+      }" @clampchange="clamped3 = $event">{{ zh ? textZh : text }}</v-clamp>
       <p class="mt-2">{{ zh ? '截断状态：' + (clamped3 ? '已截断' : '未截断') : 'Clamped: ' + (clamped3 ? 'Yes' : 'No') }}</p>
     </section>
     <div class="divider text-center" data-content="↓ ellipsis & location" />
@@ -239,12 +292,12 @@
         hyphens: hyphens4,
         rtl: rtl4
       }" :max-lines="lines4" :location="location4" :ellipsis="ellipsis4" autoresize :style="{
-          width: `${width4}px`
-        }">
+        width: `${width4}px`
+      }">
         {{ zh ? textZh : text }}
         <template #after="{ toggle, expanded, clamped }">
           <button v-if="expanded || clamped" class="toggle btn btn-sm" @click="toggle">{{ zh ? '切换' : 'Toggle'
-            }}</button>
+          }}</button>
         </template>
       </v-clamp>
     </section>
@@ -478,11 +531,11 @@ const zh = query.lang === 'zh'
 export default {
   name: 'app',
   components: {
-    VClamp
+    VClamp,
   },
   data() {
     return {
-      lines: 3,
+      lines: 2,
       width1: 600,
       location: 'end',
       hyphens1: true,
@@ -510,7 +563,22 @@ export default {
       zh,
       pascal: false,
       orginText: '可以选择限制行数与/或最大高度，无需指定行高。支持在布局变化时自动更新。支持展开/收起被截断部分内容。支持自定义截断文本前后内容，并且进行响应式更新。支持自定义截断文本前后内容，并且进行响应式更新。支持自定义截断文本前后内容，并且进行响应式更新。支持在文本末尾、中间或开始位置进行截断',
-      customText: '可以选择限制行数与/或最大高度，无需指定行高。支持在布局变化时自动更新。支持展开/收起被截断部分内容。支持自定义截断文本前后内容，并且进行响应式更新。支持自定义截断文本前后内容，并且进行响应式更新。支持自定义截断文本前后内容，并且进行响应式更新。支持在文本末尾、中间或开始位置进行截断'
+      customText: '可以选择限制行数与/或最大高度，无需指定行高。支持在布局变化时自动更新。支持展开/收起被截断部分内容。支持自定义截断文本前后内容，并且进行响应式更新。支持自定义截断文本前后内容，并且进行响应式更新。支持自定义截断文本前后内容，并且进行响应式更新。支持在文本末尾、中间或开始位置进行截断',
+      originDetail: 'adfasdfa asdfasdf a f adf fad  adfa fads adf adfasdfa asdfasdf a f adf fad  adfa fads adf adfasdfa asdfasdf a f adf fad  adfa fads adf adfasdfa asdfasdf.',
+      records: [
+        {
+          detail: 'adfasdfa asdfasdf a f adf fad  adfa fads adf adfasdfa asdfasdf a f adf fad  adfa fads adf adfasdfa asdfasdf a f adf fad  adfa fads adf ',
+          id: '1231213',
+        },
+        {
+          detail: 'adfasdfa asdfasdf a f adf fad  adfa fads adf adfasdfa asdfasdf a f adf fad  adfa fads adf adfasdfa asdfasdf a f adf fad  adfa fads adf ',
+          id: '2231213',
+        },
+        {
+          detail: 'adfasdfa asdfasdf a f adf fad  adfa fads adf adfasdfa asdfasdf a f adf fad  adfa fads adf adfasdfa asdfasdf a f adf fad  adfa fads adf ',
+          id: '3231213',
+        }
+      ]
     }
   },
   methods: {
@@ -519,6 +587,12 @@ export default {
     },
     aTextLen() {
       this.customText = this.orginText
+    },
+    handleRecordEdit(file, index) {
+      this.$set(this.records[index], 'detail', file.detail.slice(0, 50))
+    },
+    addRecordEdit(file, index) {
+      this.$set(this.records[index], 'detail', this.originDetail)
     }
   },
   computed: {
@@ -582,7 +656,17 @@ article
 
 .form-horizontal
   width 60%
-
+.demo-box
+  width 100%;
+  display flex
+  justify-content space-between
+  align-items flex-start
+.l
+  flex 1
+  flex-shrink 0
+.r
+  flex 1
+  flex-shrink 0
 .slider
   height 1.8rem
 
@@ -657,4 +741,49 @@ summary
 
     details[open] &
       transform rotateZ(45deg)
+</style>
+<style>
+.schedule-list {
+  max-width: 300px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.record-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+
+}
+
+.list-info {
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  justify-content: spanse-between;
+  align-items: center;
+  gap: 5px;
+}
+
+
+.work-detail-container {
+  flex: 1;
+  padding: 8px 0 8px 37px;
+}
+
+.wrapper {
+  padding: 3px 8px;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  background: #eee;
+}
+
+.text {
+  font-size: 12px;
+  color: #2c2c2c;
+  position: relative;
+  line-height: 1.4rem;
+}
 </style>

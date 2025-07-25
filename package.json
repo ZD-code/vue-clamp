@@ -1,6 +1,6 @@
 {
   "name": "@brand_zd/vue-clamp",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Clamping multiline text with ease.",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -48,7 +48,7 @@
   },
   "homepage": "https://github.com/ZD-code/vue-clamp/demo/",
   "license": "MIT",
-  "repository": "brand_zd/vue-clamp",
+  "repository": "vue-clamp",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
